@@ -58,15 +58,15 @@ class Space:
 
   def showItems(self) -> None:
     for item in self.items:
-      print("\n \033[92m", item.item_name, "\033[37m \n")
+      print("\n\033[92m", item.item_name, "\033[37m \n")
   
   def showMonsters(self) -> None:
     for monster in self.monsters:
-      print("\n", monster.monster_type, "\n")
+      print("\n\033[31m", monster.monster_type, "\033[37m \n")
   
   def showContainers(self) -> None:
     for container in self.containers:
-      print("\n", container.container_type, "\n")
+      print("\n\033[33m", container.container_type, "\033[37m\n")
 
 class Area:
     def __repr__():
@@ -166,9 +166,9 @@ class Battle:
     self.engauged = True
 
   def surveyBattle(self) -> None:
-    print("*\\---> You've are engaugedd in battle! <---//* \n Staring down at the challenge ahead:")
-    print("You : ", self.player.hitpoint, " hp\n")
-    print("\nOpponent : ", self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
+    print("*\n\n---> You are engauged in battle! <--- \n\n Staring down at the challenge ahead:\n")
+    print("You : ", self.player.hitpoint, " hp")
+    print(self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
     if self.monster.hitpoints <= 0:
       self.processResult("WIN")
     if self.player.hitpoint <= 0:
@@ -178,7 +178,7 @@ class Battle:
     if result == "WIN":
       print("*******************")
       print("**** \033[32m VICTORY \033[37m ****")
-      print("*******************")
+      print("*******************\n")
           
     if result == "LOSS":
       print("``````````````````")
@@ -188,7 +188,8 @@ class Battle:
     self.engauged = False
 
   def playerTurn(self) -> None:
-    print("Actions:\n (A)ttack \n (R)treat")
+    self.surveyBattle()
+    print("Actions:\n (A)ttack \n (R)treat \n")
     action = input("-//>> ")
     if action == "A" or action == "a":
       print("Hit!")
@@ -208,10 +209,12 @@ class Battle:
       self.monsterTurn()
       self.surveyBattle()
 
-    print(""" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-              ~~~ The Battle is Over ~~~
-              ~~~~~~~~~~~~~~~~~~~~~~~~~~
-          """)
+    print("nnnnnnnnnnnnnnnnnnnnnnnnnn")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~ The Battle is Over ~~~")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("uuuuuuuuuuuuuuuuuuuuuuuuuu\n\n")
+
 def parseAction(player:Player, action_string:str) -> None:
     formatted_act_str = action_string.upper().split(' ')
     default_response = '"' + action_string + '"' + " is a noble persuit but can not be done right now. "
