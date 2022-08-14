@@ -164,9 +164,10 @@ class Battle:
     self.player = player
     self.monster = monster
     self.engauged = True
+    self.rewards = list()
 
   def surveyBattle(self) -> None:
-    print("*\n\n---> You are engauged in battle! <--- \n\n Staring down at the challenge ahead:\n")
+    print("*\n\n\033[31m---> You are engauged in battle! <---\033[37m \n\n Staring down at the challenge ahead:\n")
     print("You : ", self.player.hitpoint, " hp")
     print(self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
     if self.monster.hitpoints <= 0:
@@ -179,10 +180,14 @@ class Battle:
       print("*******************")
       print("**** \033[32m VICTORY \033[37m ****")
       print("*******************\n")
-          
+      if len(self.rewards) >= 0:
+        print("\n \033[32m Rewards have dropped to the ground!!! \033[37m \n")
+        for item in self.rewards:
+          self.player.location.items.append(item)
+
     if result == "LOSS":
       print("``````````````````")
-      print("`````\033[31m  DEFEAT \033[37m`````")
+      print("`````\033[31m DEFEAT \033[37m`````")
       print("``````````````````")
     
     self.engauged = False
@@ -203,7 +208,23 @@ class Battle:
     print("-",self.monster.power)
     self.player.hitpoint -= self.monster.power  * random.randint(0, 3)
 
+  def generateRewards(self) -> None:
+    #Test data here for now. TODO: make rewards random
+    item_1 = Item()
+    item_1.description = "A scroll. It is mostly in another language, elvish? The part that can be made out reads 'PASS'"
+    item_1.use = "PASS"
+    item_1.item_name = "Scroll"
+
+    item_2 = Item()
+    item_2.description = "Brilliant red. Shiny. Smells of autumn."
+    item_2.use = "EAT"
+    item_2.item_name = "Apple"
+
+    self.rewards.append(item_1)
+    self.rewards.append(item_2)
+
   def engaugeBattle(self) -> None:
+    self.generateRewards()
     while self.engauged == True:
       self.playerTurn()
       self.monsterTurn()
