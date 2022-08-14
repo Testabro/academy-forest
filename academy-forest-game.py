@@ -1,4 +1,5 @@
 import sys
+import random
 import copy
 
 class Space:
@@ -191,7 +192,7 @@ class Battle:
     action = input("-//>> ")
     if action == "A" or action == "a":
       print("Hit!")
-      self.monster.hitpoints -= self.player.power
+      self.monster.hitpoints -= self.player.power * random.randint(0, 3)
     if action == "R" or action == "r":
       print("\n\n<<<<<<< Retreat!\n\n")
       self.engauged = False
@@ -199,7 +200,7 @@ class Battle:
   def monsterTurn(self) -> None:
     print("\n\n <<---\\\\ ATTACKED!\n\n")
     print("-",self.monster.power)
-    self.player.hitpoint -= self.monster.power
+    self.player.hitpoint -= self.monster.power  * random.randint(0, 3)
 
   def engaugeBattle(self) -> None:
     while self.engauged == True:
