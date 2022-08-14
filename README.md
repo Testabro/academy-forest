@@ -4,8 +4,8 @@ Playing around with some command line based OOP in a classic text adventure styl
 
 ![Academy Forest console view](academy-forest.PNG)
 
-##Prerequisite:
+## Prerequisite:
    Python 3.10 - needed because of the use of match-case statements
  
-##Run:
+## Run:
   python3.10 academy-forest.py
