@@ -168,7 +168,24 @@ class Battle:
     print("*\\---> You've are engaugedd in battle! <---//* \n Staring down at the challenge ahead:")
     print("You : ", self.player.hitpoint, " hp\n")
     print("\nOpponent : ", self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
-  
+    if self.monster.hitpoints <= 0:
+      self.processResult("WIN")
+    if self.player.hitpoint <= 0:
+      self.processResult("LOSS")
+
+  def processResult(self, result:str) -> None:
+    if result == "WIN":
+      print("*******************")
+      print("**** \033[32m VICTORY \033[37m ****")
+      print("*******************")
+      self.engauged = False
+    
+    if result == "LOSS":
+      print("``````````````````")
+      print("`````\033[31m  DEFEAT \033[37m`````")
+      print("``````````````````")
+      self.engauged = False
+
   def playerTurn(self) -> None:
     print("Actions:\n (A)ttack \n (R)treat")
     action = input("-//>> ")
@@ -448,6 +465,7 @@ def main():
   while(play_game == True):
       action_string = input("::> ")
       parseAction(player, action_string)
+      if player.hitpoint <= 0: exitProgram()
 
 if __name__ == "__main__":
   main()
