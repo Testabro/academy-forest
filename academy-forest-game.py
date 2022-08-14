@@ -179,13 +179,13 @@ class Battle:
       print("*******************")
       print("**** \033[32m VICTORY \033[37m ****")
       print("*******************")
-      self.engauged = False
-    
+          
     if result == "LOSS":
       print("``````````````````")
       print("`````\033[31m  DEFEAT \033[37m`````")
       print("``````````````````")
-      self.engauged = False
+    
+    self.engauged = False
 
   def playerTurn(self) -> None:
     print("Actions:\n (A)ttack \n (R)treat")
@@ -204,9 +204,9 @@ class Battle:
 
   def engaugeBattle(self) -> None:
     while self.engauged == True:
-      self.surveyBattle()
       self.playerTurn()
       self.monsterTurn()
+      self.surveyBattle()
 
     print(""" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               ~~~ The Battle is Over ~~~
