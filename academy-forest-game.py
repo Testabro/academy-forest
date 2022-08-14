@@ -246,7 +246,7 @@ def parseAction(player:Player, action_string:str) -> None:
           case "QUIT" : exitProgram() 
           case "EXIT" : exitProgram()
           case "HELP" : helpInfo()              
-          case _: print(default_response)
+          case _: print(default_response); return
 
     if len(formatted_act_str) == 2:
       match formatted_act_str[0]:
@@ -254,9 +254,11 @@ def parseAction(player:Player, action_string:str) -> None:
         case "MOVE" : move(player, formatted_act_str[1])
         case "TAKE" : take(player, formatted_act_str[1])
         case "USE" : use(player, formatted_act_str[1])
+        case _: print(default_response); return
             
     if len(formatted_act_str) > 2:
       print("\nYou are a clever being. Me however, I can really only handle two words at a time :)\n")
+
 
 def exitProgram() -> None:
     print("There is an ancient saying that: reality rots your brain. Play more video games ;)\n\n")
@@ -324,11 +326,13 @@ def move(player:Player, target:str) -> None:
 def take(player:Player, target:str) -> None:
   for item in player.location.items:
     if target in item.item_name.upper():
+      print("TAKEN")
+      print(item.item_name,":",item.description)
       deep_copy_item = copy.deepcopy(item)
       player.location.items.remove(item)
       player.inventory.addItem(deep_copy_item)
       return
-  print("Looked hard but cannot find a ", target.lower())
+  print("Looked hard but cannot find a", target.lower(), "that can be taken")
 
 def use(player:Player, target:str) -> None:
   if target == "KEY":
