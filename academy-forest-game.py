@@ -166,7 +166,7 @@ class Battle:
 
   def surveyBattle(self) -> None:
     print("*\\---> You've are engaugedd in battle! <---//* \n Staring down at the challenge ahead:")
-    print("You : \n", self.player.hitpoint, " hp\n\n")
+    print("You : ", self.player.hitpoint, " hp\n")
     print("\nOpponent : ", self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
   
   def playerTurn(self) -> None:
@@ -186,9 +186,10 @@ class Battle:
 
   def engaugeBattle(self) -> None:
     while self.engauged == True:
+      self.surveyBattle()
       self.playerTurn()
       self.monsterTurn()
-      self.surveyBattle()
+
     print(""" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               ~~~ The Battle is Over ~~~
               ~~~~~~~~~~~~~~~~~~~~~~~~~~
