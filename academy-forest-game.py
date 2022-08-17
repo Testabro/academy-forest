@@ -175,7 +175,94 @@ class Player:
             self.die()
 
     def attack(self, target:Monster):
-        target.takeDamage(self.power)
+        target.takeDamage(self.power)    
+    
+    def look(self,target:str) -> None:
+      
+      if target == "NORTH": self.location.checkNorth(); return 
+      if target == "SOUTH": self.location.checkSouth(); return
+      if target == "EAST":  self.location.checkEast(); return
+      if target == "WEST":  self.location.checkWest(); return
+      if target == "INVENTORY": self.inventory.showAllItems(); return
+
+      self.location.describeSpace()
+      self.location.showItems()
+      self.location.showMonsters()
+      self.location.showContainers()
+      if type(self.location.finish) == Finish:
+        print(self.location.finish.description)
+
+    def move(self,target:str) -> None:
+      print("\n ** one foot in front of the other ** \n")
+
+      #Move North
+      if target == "NORTH" and type(self.location.north) == Space:
+        self.location = self.location.north
+        self.location.describeSpace()
+        return
+
+      #Move South
+      if target == "SOUTH" and type(self.location.south) == Space:
+        self.location = self.location.south
+        self.location.describeSpace()
+        return
+      
+      #Move East
+      if target == "EAST" and type(player.location.east) == Space:
+        self.location = self.location.east
+        self.location.describeSpace()
+        return
+      
+      #Move West
+      if target == "WEST" and type(self.location.west) == Space:
+        self.location = self.location.west
+        self.location.describeSpace()
+        return
+      
+      print("Gave it a go but the way is impassible.")
+
+    def take(self,target:str) -> None:
+      for item in self.location.items:
+        if target in item.item_name.upper():
+          print("TAKEN")
+          print(item.item_name,":",item.description)
+          deep_copy_item = copy.deepcopy(item)
+          self.location.items.remove(item)
+          self.inventory.addItem(deep_copy_item)
+          return
+      print("Looked hard but cannot find a", target.lower(), "that can be taken")
+
+    def use(self,target:str) -> None:
+      if target == "KEY":
+        #Open item check
+        hasKey = False
+        key_index = -1
+        
+        for item in self.inventory.slots:
+          print(item.use)
+          if item.use.upper() == "UNLOCK":
+            hasKey = True
+            key_index = self.inventory.slots.index(item)
+            print("Found key in inventory")
+
+        #Will try the first container in the space for now. TODO: Look through / select containers
+        if self.location.containers[0].locked == True and hasKey == True:
+          self.location.containers[0].locked == False
+          self.inventory.slots.pop(key_index)
+          print("\nYou use the key and lay the contains on the ground\n")
+          for item in self.location.containers[0].slots:
+            deep_copy_item = copy.deepcopy(item)
+            self.location.items.append(deep_copy_item)
+            self.location.containers[0].slots.remove(item)
+
+      if target == "SWORD":
+        if self.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
+        battle = Battle(player, self.location.monsters[0])
+        battle.engaugeBattle()
+
+      for item in self.inventory.slots:
+        if item.use == self.location.finish.use:
+          self.location.finish.executeFinish()
 
 class Battle:
   def __repr__(self) -> str:
@@ -271,10 +358,10 @@ def parseAction(player:Player, action_string:str) -> None:
 
     if len(formatted_act_str) == 2:
       match formatted_act_str[0]:
-        case "LOOK" : look(player, formatted_act_str[1]) 
-        case "MOVE" : move(player, formatted_act_str[1])
-        case "TAKE" : take(player, formatted_act_str[1])
-        case "USE" : use(player, formatted_act_str[1])
+        case "LOOK" : player.look(formatted_act_str[1]) 
+        case "MOVE" : player.move(formatted_act_str[1])
+        case "TAKE" : player.take(formatted_act_str[1])
+        case "USE" : player.use(formatted_act_str[1])
         case _: print(default_response); return
             
     if len(formatted_act_str) > 2:
@@ -301,94 +388,6 @@ def helpInfo() -> None:
            use
               ex. use sword              
         """)
-
-def look(player:Player, target:str) -> None:
-  
-  if target == "NORTH": player.location.checkNorth(); return 
-  if target == "SOUTH": player.location.checkSouth(); return
-  if target == "EAST":  player.location.checkEast(); return
-  if target == "WEST":  player.location.checkWest(); return
-  if target == "INVENTORY": player.inventory.showAllItems(); return
-
-  player.location.describeSpace()
-  player.location.showItems()
-  player.location.showMonsters()
-  player.location.showContainers()
-  if type(player.location.finish) == Finish:
-    print(player.location.finish.description)
-
-def move(player:Player, target:str) -> None:
-  print("\n ** one foot in front of the other ** \n")
-
-  #Move North
-  if target == "NORTH" and type(player.location.north) == Space:
-    player.location = player.location.north
-    player.location.describeSpace()
-    return
-
-  #Move South
-  if target == "SOUTH" and type(player.location.south) == Space:
-    player.location = player.location.south
-    player.location.describeSpace()
-    return
-  
-  #Move East
-  if target == "EAST" and type(player.location.east) == Space:
-    player.location = player.location.east
-    player.location.describeSpace()
-    return
-  
-  #Move West
-  if target == "WEST" and type(player.location.west) == Space:
-    player.location = player.location.west
-    player.location.describeSpace()
-    return
-  
-  print("Gave it a go but the way is impassible.")
-
-def take(player:Player, target:str) -> None:
-  for item in player.location.items:
-    if target in item.item_name.upper():
-      print("TAKEN")
-      print(item.item_name,":",item.description)
-      deep_copy_item = copy.deepcopy(item)
-      player.location.items.remove(item)
-      player.inventory.addItem(deep_copy_item)
-      return
-  print("Looked hard but cannot find a", target.lower(), "that can be taken")
-
-def use(player:Player, target:str) -> None:
-  if target == "KEY":
-    #Open item check
-    hasKey = False
-    key_index = -1
-    
-    for item in player.inventory.slots:
-      print(item.use)
-      if item.use.upper() == "UNLOCK":
-        hasKey = True
-        key_index = player.inventory.slots.index(item)
-        print("Found key in inventory")
-
-    #Will try the first container in the space for now. TODO: Look through / select containers
-    if player.location.containers[0].locked == True and hasKey == True:
-      player.location.containers[0].locked == False
-      player.inventory.slots.pop(key_index)
-      print("\nYou use the key and lay the contains on the ground\n")
-      for item in player.location.containers[0].slots:
-        deep_copy_item = copy.deepcopy(item)
-        player.location.items.append(deep_copy_item)
-        player.location.containers[0].slots.remove(item)
-
-  if target == "SWORD":
-    if player.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
-    battle = Battle(player, player.location.monsters[0])
-    battle.engaugeBattle()
-
-  for item in player.inventory.slots:
-    if item.use == player.location.finish.use:
-      player.location.finish.executeFinish()
-
     
 def main():
   """ Main entry point of the app """
