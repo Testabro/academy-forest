@@ -1,6 +1,23 @@
+from platform import platform
 import sys
 import random
 import copy
+
+
+class Finish:
+  def __repr__(self) -> str:
+    return "Transisiton object for new levels, win conditions, etc."
+  
+  def __init__(self) -> None:
+    self.use = ""
+    self.conditions = list()
+    self.description = ""
+  
+  def executeFinish(self) -> None:
+    #TODO: make this more modular
+      print("You have elevated beyond acedemy forest to a more wild and unpredictable land...")
+      print("Fair winds and following seas to you adventurer")
+      sys.exit()
 
 class Space:
   def __repr__(self):
@@ -22,6 +39,10 @@ class Space:
     self.items = list()
     self.containers = list()
     self.monsters = list()
+    self.finish = Finish()
+
+  def setFinish(self, finish:Finish) -> None:
+    self.finish = finish
 
   def describeSpace(self) -> None:
     print("\n* {description} *\n".format(description=self.description))
@@ -212,7 +233,7 @@ class Battle:
     #Test data here for now. TODO: make rewards random
     item_1 = Item()
     item_1.description = "A scroll. It is mostly in another language, elvish? The part that can be made out reads 'PASS'"
-    item_1.use = "PASS"
+    item_1.use = "END"
     item_1.item_name = "Scroll"
 
     item_2 = Item()
@@ -293,6 +314,8 @@ def look(player:Player, target:str) -> None:
   player.location.showItems()
   player.location.showMonsters()
   player.location.showContainers()
+  if type(player.location.finish) == Finish:
+    print(player.location.finish.description)
 
 def move(player:Player, target:str) -> None:
   print("\n ** one foot in front of the other ** \n")
@@ -361,6 +384,11 @@ def use(player:Player, target:str) -> None:
     if player.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
     battle = Battle(player, player.location.monsters[0])
     battle.engaugeBattle()
+
+  for item in player.inventory.slots:
+    if item.use == player.location.finish.use:
+      player.location.finish.executeFinish()
+
     
 def main():
   """ Main entry point of the app """
@@ -487,6 +515,14 @@ def main():
   forest_area.space_list[starting_pt_index].containers.append(chest_1)
   chest_1.addItem(sword)
   forest_area.space_list[starting_pt_index].monsters.append(goblin_1)
+
+  #Create and place finish condition
+  finish_point = Finish()
+  finish_point.use = "END"
+  finish_point.description = "A petestal sits here. It has an outline of dust on top that forms the shape of a piece of paper.\n"
+  finish_space_index = random.randint(0,len(forest_area.space_list) - 1)
+  forest_area.space_list[finish_space_index].setFinish(finish_point)
+
 
   #Game loop
   play_game = True
