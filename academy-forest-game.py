@@ -135,6 +135,7 @@ class Area:
     self.area_graph[row][col] = space
     space.y_coord = row
     space.x_coord = col
+    self.space_list.append(space)
 
 class Item:
   """A thing in the world that can be interacted with and can be described
@@ -498,31 +499,14 @@ def main():
   forest_area = Area(row_len,col_len)
   
   forest_area.assignSpace(forest1,1,1)
-  forest_area.space_list.append(forest1)
-
   forest_area.assignSpace(forest2,1,2)
-  forest_area.space_list.append(forest2)
-
   forest_area.assignSpace(forest3,2,2)
-  forest_area.space_list.append(forest3)
-
   forest_area.assignSpace(forest4,3,2)
-  forest_area.space_list.append(forest4)
-
   forest_area.assignSpace(forest5,2,3)
-  forest_area.space_list.append(forest4)
-
   forest_area.assignSpace(forest6,3,3)
-  forest_area.space_list.append(forest5)
-
   forest_area.assignSpace(forest7,1,0)
-  forest_area.space_list.append(forest6)
-
   forest_area.assignSpace(forest8,4,2)
-  forest_area.space_list.append(forest7)
-
   forest_area.assignSpace(forest9,4,1)
-  forest_area.space_list.append(forest7)
 
 #Identify and locally store in each space it's neighbors to the north south east and west
   for row_index in range(row_len):
