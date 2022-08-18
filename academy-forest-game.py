@@ -118,7 +118,7 @@ class Space:
       print("\n\033[33m", container.container_type, "\033[37m\n")
 
 class Area:
-  """Keep track of spaces and their relationship to one another on a 2d griv
+  """Keep track of spaces and their relationship to one another on a 2d grid
 
   Attributes:
       area_graph: A 2d array that contains references to Space objects
