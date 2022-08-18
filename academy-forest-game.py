@@ -536,27 +536,22 @@ def main():
       if col_index != col_len - 1:
         if type(forest_area.area_graph[row_index][col_index + 1]) == Space:
           forest_area.area_graph[row_index][col_index].east = forest_area.area_graph[row_index][col_index + 1]
-          # print("Space ",forest_area.area_graph[row_index][col_index].space_id," has a neighbor to the east : ", forest_area.area_graph[row_index][col_index + 1].space_id)
-      
+          
       #Neighbors to the West
       if col_index != 0:
         if type(forest_area.area_graph[row_index][col_index - 1]) == Space:
           forest_area.area_graph[row_index][col_index].west = forest_area.area_graph[row_index][col_index - 1]
-          # print("Space ",forest_area.area_graph[row_index][col_index].space_id," has a neighbor to the west : ", forest_area.area_graph[row_index][col_index - 1].space_id)
-      
+          
       #Neighbors to the South
       if row_index != row_len - 1:
         if type(forest_area.area_graph[row_index + 1][col_index]) == Space:
           forest_area.area_graph[row_index][col_index].south = forest_area.area_graph[row_index + 1][col_index]
-          # print("Space ",forest_area.area_graph[row_index][col_index].space_id," has a neighbor to the south : ", forest_area.area_graph[row_index + 1][col_index].space_id)
-      
+          
       #Neighbors to the North
       if row_index != 0:
         if type(forest_area.area_graph[row_index - 1][col_index]) == Space:
           forest_area.area_graph[row_index][col_index].north = forest_area.area_graph[row_index - 1][col_index]
-          # print("Space ",forest_area.area_graph[row_index][col_index].space_id," has a neighbor to the north : ", forest_area.area_graph[row_index - 1][col_index].space_id)
-    
-    
+              
   #Place player
   player.location = forest3
   forest3.describeSpace()
