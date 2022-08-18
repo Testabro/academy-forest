@@ -1,10 +1,17 @@
-from platform import platform
 import sys
 import random
 import copy
 
 
 class Finish:
+  """Manage a change in state of the program. i.e end the game loop, change the map object
+
+  Attributes:
+      use: A string that represents what this object will be used for
+      conditions: A list of strings that stores the conditions that must be met for finish object to change the state
+      description: A string that optionally describes what the finish object will represent in the program
+  """
+
   def __repr__(self) -> str:
     return "Transisiton object for new levels, win conditions, etc."
   
@@ -20,6 +27,27 @@ class Finish:
       sys.exit()
 
 class Space:
+  """Represents a place in the world
+  
+  Attributes:
+      description: A string to optionally describe the space as it is in the world
+      space_id: An integer that uniquely identifies TODO: needs a hash function or similar to prevent collision
+    
+      #Location information
+      x_coord: An integer representing where this space would be located on a grid or 2d array in the x positiion
+      y_coord: An integer representing where this space would be located on a grid or 2d array in the y positiion
+      north: A reference to a Space object that is -1,0 (row,column) in the grid or 2d array 
+      south: A reference to a Space object that is +1,0 (row,column) in the grid or 2d array
+      east: A reference to a Space object that is 0,+1 (row,column) in the grid or 2d array
+      west: A reference to a Space object that is 0,-1 (row,column) in the grid or 2d array
+
+    # Objects, such as items and monsters, in this space
+      items: A list that contains Item objects
+      containers: A list that contains Inventory objects
+      monsters = A list that contains Monster objects
+      finish = A reference to a Finish object
+
+  """
   def __repr__(self):
     return "A space"
   
@@ -90,19 +118,32 @@ class Space:
       print("\n\033[33m", container.container_type, "\033[37m\n")
 
 class Area:
-    def __repr__():
-        return "A collection of spaces"
-    
-    def __init__(self, rows:int, cols:int) -> list:
-      self.area_graph = [[0] * cols for i in range(rows)]
-      self.space_list = list()
+  """Keep track of spaces and their relationship to one another on a 2d griv
 
-    def assignSpace(self,space:Space, row:int, col:int) -> None:
-      self.area_graph[row][col] = space
-      space.y_coord = row
-      space.x_coord = col
+  Attributes:
+      area_graph: A 2d array that contains references to Space objects
+      space_list: A list of all Space objects referenced in the area_graph
+  """
+  def __repr__():
+      return "A collection of spaces"
+  
+  def __init__(self, rows:int, cols:int) -> list:
+    self.area_graph = [[0] * cols for i in range(rows)]
+    self.space_list = list()
+
+  def assignSpace(self,space:Space, row:int, col:int) -> None:
+    self.area_graph[row][col] = space
+    space.y_coord = row
+    space.x_coord = col
 
 class Item:
+  """An Item class is used to keep track of spaces and their relationship to one another on a 2d griv
+
+  Attributes:
+      item_name: A 2d array that contains references to Space objects
+      description: A list of all Space objects referenced in the area_graph
+      use: 
+  """
   def __init__(self):
     self.item_name = "indescript object"
     self.description = "Just a plain object"
@@ -115,6 +156,14 @@ class Item:
     print(self.use + ". Nothing much happens.") 
 
 class Inventory:
+  """Hold and manage other objects such as Items
+
+  Attributes:
+      slots: A list of Items
+      max_size: An integer representing the maximum number of Items that can be keep track of
+      locked: A bool that indicates whether the list of items are authorized to be accessed or not
+      container_type: A string to plainly represent in words what the Inventory is in the world
+  """
   def __init__(self):
     self.slots = list()
     self.max_size = 10
@@ -137,102 +186,118 @@ class Inventory:
       item.printItem()
 
 class Monster:
-    def __repr__(self) -> str:
-       pass
+  """An adversary in the world
 
-    def __init__(self) -> None:
-       self.hitpoints = 10
-       self.power = 0.5
-       self.monster_type = "Goblin"
-       self.state = "ALIVE"
-    
-    def takeDamage(self, damage:int) -> None:
-        self.hitpoints - damage
-        if self.hitpoints <= 0:
-            self.state = "DEAD"
+  Attributes:
+      hitpoints: An integer representing the health of this monster
+      power: An integer representing the amount of base damage this monster can do
+      monster_type: A string that has the description of what kind of monster this is
+      state: A string representing the physical state of the monster in the world
+  """
+  def __repr__(self) -> str:
+      pass
 
-    def attack(self, player) -> None:
-        if self.state == "ALIVE":
-            player.takeDamge(self.power)
+  def __init__(self) -> None:
+      self.hitpoints = 10
+      self.power = 0.5
+      self.monster_type = "Goblin"
+      self.state = "ALIVE"
+  
+  def takeDamage(self, damage:int) -> None:
+      self.hitpoints - damage
+      if self.hitpoints <= 0:
+          self.state = "DEAD"
+
+  def attack(self, player) -> None:
+      if self.state == "ALIVE":
+          player.takeDamge(self.power)
 
 class Player:
-    def __repr__(self) -> str:
-       pass
+  """Manages the state of the player throughout the world
 
-    def __init__(self) -> None:
-       self.hitpoint = 10
-       self.power = 1
-       self.inventory = Inventory()
-       #Space the player is currently in
-       self.location = Space(-1,"An odd white void.")
+  Attributes:
+      hitpoints: An integer representing the health of the player
+      power: An integer representing the amount of base damage the player can do
+      inventory: An Inventory object that is used to keep track of Items related to the player
+      location: A reference to a Space that the player can currently interact with
+  """
+  def __repr__(self) -> str:
+      pass
 
-    def die(self):
-        print("The end is nigh")
+  def __init__(self) -> None:
+      self.hitpoint = 10
+      self.power = 1
+      self.inventory = Inventory()
+      #Space the player is currently in
+      self.location = Space(-1,"An odd white void.")
 
-    def takeDamage(self, damage:int) -> None:
-        self.hitpoints - damage
-        if self.hitpoints <= 0:
-            self.die()
+  def die(self):
+      print("The end is nigh")
 
-    def attack(self, target:Monster):
-        target.takeDamage(self.power)    
+  def takeDamage(self, damage:int) -> None:
+      self.hitpoints - damage
+      if self.hitpoints <= 0:
+          self.die()
+
+  def attack(self, target:Monster):
+      target.takeDamage(self.power)    
+  
+  def look(self,target:str) -> None:
     
-    def look(self,target:str) -> None:
-      
-      if target == "NORTH": self.location.checkNorth(); return 
-      if target == "SOUTH": self.location.checkSouth(); return
-      if target == "EAST":  self.location.checkEast(); return
-      if target == "WEST":  self.location.checkWest(); return
-      if target == "INVENTORY": self.inventory.showAllItems(); return
+    if target == "NORTH": self.location.checkNorth(); return 
+    if target == "SOUTH": self.location.checkSouth(); return
+    if target == "EAST":  self.location.checkEast(); return
+    if target == "WEST":  self.location.checkWest(); return
+    if target == "INVENTORY": self.inventory.showAllItems(); return
 
+    self.location.describeSpace()
+    self.location.showItems()
+    self.location.showMonsters()
+    self.location.showContainers()
+    if type(self.location.finish) == Finish:
+      print(self.location.finish.description)
+
+  def move(self,target:str) -> None:
+    print("\n ** one foot in front of the other ** \n")
+
+    #Move North
+    if target == "NORTH" and type(self.location.north) == Space:
+      self.location = self.location.north
       self.location.describeSpace()
-      self.location.showItems()
-      self.location.showMonsters()
-      self.location.showContainers()
-      if type(self.location.finish) == Finish:
-        print(self.location.finish.description)
+      return
 
-    def move(self,target:str) -> None:
-      print("\n ** one foot in front of the other ** \n")
+    #Move South
+    if target == "SOUTH" and type(self.location.south) == Space:
+      self.location = self.location.south
+      self.location.describeSpace()
+      return
+    
+    #Move East
+    if target == "EAST" and type(player.location.east) == Space:
+      self.location = self.location.east
+      self.location.describeSpace()
+      return
+    
+    #Move West
+    if target == "WEST" and type(self.location.west) == Space:
+      self.location = self.location.west
+      self.location.describeSpace()
+      return
+    
+    print("Gave it a go but the way is impassible.")
 
-      #Move North
-      if target == "NORTH" and type(self.location.north) == Space:
-        self.location = self.location.north
-        self.location.describeSpace()
+  def take(self,target:str) -> None:
+    for item in self.location.items:
+      if target in item.item_name.upper():
+        print("TAKEN")
+        print(item.item_name,":",item.description)
+        deep_copy_item = copy.deepcopy(item)
+        self.location.items.remove(item)
+        self.inventory.addItem(deep_copy_item)
         return
+    print("Looked hard but cannot find a", target.lower(), "that can be taken")
 
-      #Move South
-      if target == "SOUTH" and type(self.location.south) == Space:
-        self.location = self.location.south
-        self.location.describeSpace()
-        return
-      
-      #Move East
-      if target == "EAST" and type(player.location.east) == Space:
-        self.location = self.location.east
-        self.location.describeSpace()
-        return
-      
-      #Move West
-      if target == "WEST" and type(self.location.west) == Space:
-        self.location = self.location.west
-        self.location.describeSpace()
-        return
-      
-      print("Gave it a go but the way is impassible.")
-
-    def take(self,target:str) -> None:
-      for item in self.location.items:
-        if target in item.item_name.upper():
-          print("TAKEN")
-          print(item.item_name,":",item.description)
-          deep_copy_item = copy.deepcopy(item)
-          self.location.items.remove(item)
-          self.inventory.addItem(deep_copy_item)
-          return
-      print("Looked hard but cannot find a", target.lower(), "that can be taken")
-
-    def use(self,target:str) -> None:
+  def use(self,target:str) -> None:
       if target == "KEY":
         #Open item check
         hasKey = False
@@ -265,6 +330,14 @@ class Player:
           self.location.finish.executeFinish()
 
 class Battle:
+  """Manages the state of a battle engaugement
+
+  Attributes:
+      player: A reference to the Player
+      monster: A reference to a Monster
+      engauged: A bool that tracks whether the battle loop should continue or end
+      rewards: A list of Items that will be presented given a successful outcome
+  """
   def __repr__(self) -> str:
     return "A battle instance"
   
@@ -366,7 +439,6 @@ def parseAction(player:Player, action_string:str) -> None:
             
     if len(formatted_act_str) > 2:
       print("\nYou are a clever being. Me however, I can really only handle two words at a time :)\n")
-
 
 def exitProgram() -> None:
     print("There is an ancient saying that: reality rots your brain. Play more video games ;)\n\n")
