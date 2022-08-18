@@ -137,12 +137,12 @@ class Area:
     space.x_coord = col
 
 class Item:
-  """An Item class is used to keep track of spaces and their relationship to one another on a 2d griv
+  """A thing in the world that can be interacted with and can be described
 
   Attributes:
-      item_name: A 2d array that contains references to Space objects
-      description: A list of all Space objects referenced in the area_graph
-      use: 
+      item_name: A string that identifys the type of item
+      description: A string that gives a description to be used in the world
+      use: A string used for identifing interaction possbilities
   """
   def __init__(self):
     self.item_name = "indescript object"
