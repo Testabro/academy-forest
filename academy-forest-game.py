@@ -274,7 +274,7 @@ class Player:
       return
     
     #Move East
-    if target == "EAST" and type(player.location.east) == Space:
+    if target == "EAST" and type(self.location.east) == Space:
       self.location = self.location.east
       self.location.describeSpace()
       return
@@ -323,7 +323,7 @@ class Player:
 
       if target == "SWORD":
         if self.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
-        battle = Battle(player, self.location.monsters[0])
+        battle = Battle(self, self.location.monsters[0])
         battle.engaugeBattle()
 
       for item in self.inventory.slots:
