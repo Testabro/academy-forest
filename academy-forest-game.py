@@ -324,19 +324,19 @@ class Player:
       if target == "SWORD":
         if self.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
         battle = Battle(self, self.location.monsters[0])
-        battle.engaugeBattle()
+        battle.engageBattle()
 
       for item in self.inventory.slots:
         if item.use == self.location.finish.use:
           self.location.finish.executeFinish()
 
 class Battle:
-  """Manages the state of a battle engaugement
+  """Manages the state of a battle engagement
 
   Attributes:
       player: A reference to the Player
       monster: A reference to a Monster
-      engauged: A bool that tracks whether the battle loop should continue or end
+      engaged: A bool that tracks whether the battle loop should continue or end
       rewards: A list of Items that will be presented given a successful outcome
   """
   def __repr__(self) -> str:
@@ -345,11 +345,11 @@ class Battle:
   def __init__(self,player:Player, monster:Monster) -> None:
     self.player = player
     self.monster = monster
-    self.engauged = True
+    self.engaged = True
     self.rewards = list()
 
   def surveyBattle(self) -> None:
-    print("*\n\n\033[31m---> You are engauged in battle! <---\033[37m \n\n Staring down at the challenge ahead:\n")
+    print("*\n\n\033[31m---> You are engaged in battle! <---\033[37m \n\n Staring down at the challenge ahead:\n")
     print("You : ", self.player.hitpoint, " hp")
     print(self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
     if self.monster.hitpoints <= 0:
@@ -372,7 +372,7 @@ class Battle:
       print("`````\033[31m DEFEAT \033[37m`````")
       print("``````````````````")
     
-    self.engauged = False
+    self.engaged = False
 
   def playerTurn(self) -> None:
     self.surveyBattle()
@@ -383,7 +383,7 @@ class Battle:
       self.monster.hitpoints -= self.player.power * random.randint(0, 3)
     if action == "R" or action == "r":
       print("\n\n<<<<<<< Retreat!\n\n")
-      self.engauged = False
+      self.engaged = False
 
   def monsterTurn(self) -> None:
     print("\n\n <<---\\\\ ATTACKED!\n\n")
@@ -405,9 +405,9 @@ class Battle:
     self.rewards.append(item_1)
     self.rewards.append(item_2)
 
-  def engaugeBattle(self) -> None:
+  def engageBattle(self) -> None:
     self.generateRewards()
-    while self.engauged == True:
+    while self.engaged == True:
       self.playerTurn()
       self.monsterTurn()
       self.surveyBattle()
