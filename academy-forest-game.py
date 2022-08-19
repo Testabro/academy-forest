@@ -22,7 +22,7 @@ class Finish:
   
   def executeFinish(self) -> None:
     #TODO: make this more modular
-      print("You have elevated beyond acedemy forest to a more wild and unpredictable land...")
+      print("You have elevated beyond academy forest to a more wild and unpredictable land...")
       print("Fair winds and following seas to you adventurer")
       sys.exit()
 
