@@ -18,6 +18,12 @@ For those that are interested below are the following ideas if you would like to
 - [ ] Stats feature
 - [ ] Skill feature
 
+Rules of thumb to keep in mind from https://developers.google.com/blockly/guides/contribute/get-started/write_a_good_pr
+
+- Fix one problem. Don't try to tackle multiple issues at once.
+- Limit the scope. Usually a PR should take < 8hrs (depending on your familiarity with the codebase).
+- Use commits. If your PR feels a little big, split the changes into logical groups using git commits.
+
 ## Prerequisite:
    Python 3.10 - needed because of the use of match-case statements
  
