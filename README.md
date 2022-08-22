@@ -13,7 +13,10 @@ For those that are interested below are the following ideas if you would like to
 - [ ] jakte insekter! ALL DEFECT corrections welcome :)
 - [ ] external data format for Spaces, Items, Area
 - [ ] Environment building module
+- [ ] Item building module
 - [ ] Enemuration or simalar for "use" attributes
+- [ ] Stats feature
+- [ ] Skill feature
 
 ## Prerequisite:
    Python 3.10 - needed because of the use of match-case statements
