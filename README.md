@@ -14,7 +14,7 @@ For those that are interested below are the following ideas if you would like to
 - [ ] external data format for Spaces, Items, Area
 - [ ] Environment building module
 - [ ] Item building module
-- [ ] Enemuration or simalar for "use" attributes
+- [ ] Enemuration or similar for "use" attributes
 - [ ] Stats feature
 - [ ] Skill feature
 
