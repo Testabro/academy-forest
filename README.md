@@ -10,7 +10,7 @@ https://medium.com/@thomas.r.estabrook/academy-forest-playing-with-object-orient
 ## Pull Request tasks
 For those that are interested below are the following ideas if you would like to do a pull request against this project:
 
-- [ ] ALL found Bug corrections :)
+- [ ] jakte insekter! ALL DEFECT corrections welcome :)
 - [ ] external data format for Spaces, Items, Area
 - [ ] Environment building module
 - [ ] Enemuration or simalar for "use" attributes
