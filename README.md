@@ -7,17 +7,6 @@ Playing around with some command line based OOP in a classic text adventure styl
 ## Design Discussion
 https://medium.com/@thomas.r.estabrook/academy-forest-playing-with-object-oriented-programming-in-python-30198b2df400
 
-## Pull Request tasks
-A TODO list:
-
-- [ ] jakte insekter! ALL DEFECT corrections
-- [ ] external data format for Spaces, Items, Area
-- [ ] Environment building module
-- [ ] Item building module
-- [ ] Enemuration or similar for "use" attributes
-- [ ] Stats feature
-- [ ] Skill feature
-
 Rules of thumb to keep in mind from https://developers.google.com/blockly/guides/contribute/get-started/write_a_good_pr
 
 - Fix one problem. Don't try to tackle multiple issues at once.
