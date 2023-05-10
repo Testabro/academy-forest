@@ -11,7 +11,7 @@ Rules of thumb used from https://developers.google.com/blockly/guides/contribute
 
 - Fix one problem. Don't try to tackle multiple issues at once.
 - Limit the scope. Here maybe < 10 minutes per change :)
-- Use commits. When PR feels a little big, it changes were split into logical groups using git commits.
+- Use commits. When PR felt a little big, changes were split into logical groups using git commits.
 
 ## Prerequisite:
    Python 3.10 - needed because of the use of match-case statements
