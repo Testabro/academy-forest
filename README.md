@@ -10,7 +10,7 @@ https://medium.com/@thomas.r.estabrook/academy-forest-playing-with-object-orient
 Rules of thumb used from https://developers.google.com/blockly/guides/contribute/get-started/write_a_good_pr
 
 - Fix one problem. Don't try to tackle multiple issues at once.
-- Limit the scope. Here maybe < 10 minutes per change :)
+- Limit the scope.
 - Use commits. When PR felt a little big, changes were split into logical groups using git commits.
 
 ## Prerequisite:
