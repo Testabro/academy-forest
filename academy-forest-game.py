@@ -21,8 +21,7 @@ class Finish:
     self.description = ""
   
   def executeFinish(self) -> None:
-    #TODO: make this more modular
-      print("You have elevated beyond academy forest to a more wild and unpredictable land...")
+    print("You have elevated beyond academy forest to a more wild and unpredictable land...")
       print("Fair winds and following seas to you adventurer")
       sys.exit()
 
@@ -79,7 +78,7 @@ class Space:
     print(use + " nothing much else.")
   
   def printCoordinates(self) -> None:
-    print("X: " + self.x_coord + "Y: " + self.y_coord)
+    print("X: " + str(self.x_coord) + " Y: " + str(self.y_coord))
 
   def checkNorth(self) -> None:
     if type(self.north) == Space: 
@@ -177,10 +176,10 @@ class Inventory:
   
   def removeItem(self, item: Item) -> None:
     if item in self.slots:
-      self.slots.pop(item)
+      self.slots.remove(item)
 
   def lookAtItem(self, item: Item) -> str:
-    if item in self.slot: return item
+    if item in self.slots: return item
   
   def showAllItems(self) -> list:
     for item in self.slots:
@@ -205,13 +204,13 @@ class Monster:
       self.state = "ALIVE"
   
   def takeDamage(self, damage:int) -> None:
-      self.hitpoints - damage
+      self.hitpoints -= damage
       if self.hitpoints <= 0:
           self.state = "DEAD"
 
   def attack(self, player) -> None:
       if self.state == "ALIVE":
-          player.takeDamge(self.power)
+          player.takeDamage(self.power)
 
 class Player:
   """Manages the state of the player throughout the world
@@ -226,7 +225,7 @@ class Player:
       pass
 
   def __init__(self) -> None:
-      self.hitpoint = 10
+      self.hitpoints = 10
       self.power = 1
       self.inventory = Inventory()
       #Space the player is currently in
@@ -236,7 +235,7 @@ class Player:
       print("The end is nigh")
 
   def takeDamage(self, damage:int) -> None:
-      self.hitpoints - damage
+      self.hitpoints -= damage
       if self.hitpoints <= 0:
           self.die()
 
@@ -311,9 +310,8 @@ class Player:
             key_index = self.inventory.slots.index(item)
             print("Found key in inventory")
 
-        #Will try the first container in the space for now. TODO: Look through / select containers
         if self.location.containers[0].locked == True and hasKey == True:
-          self.location.containers[0].locked == False
+          self.location.containers[0].locked = False
           self.inventory.slots.pop(key_index)
           print("\nYou use the key and lay the contains on the ground\n")
           for item in self.location.containers[0].slots:
@@ -322,7 +320,7 @@ class Player:
             self.location.containers[0].slots.remove(item)
 
       if target == "SWORD":
-        if self.location.monsters.count == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
+        if len(self.location.monsters) == 0: print("You swoosh and swish it a bit in the air. A neat move but that is about it."); return
         battle = Battle(self, self.location.monsters[0])
         battle.engageBattle()
 
@@ -350,11 +348,11 @@ class Battle:
 
   def surveyBattle(self) -> None:
     print("*\n\n\033[31m---> You are engaged in battle! <---\033[37m \n\n Staring down at the challenge ahead:\n")
-    print("You : ", self.player.hitpoint, " hp")
+    print("You : ", self.player.hitpoints, " hp")
     print(self.monster.monster_type, " : ", self.monster.hitpoints, " hp\n\n")
     if self.monster.hitpoints <= 0:
       self.processResult("WIN")
-    if self.player.hitpoint <= 0:
+    if self.player.hitpoints <= 0:
       self.processResult("LOSS")
 
   def processResult(self, result:str) -> None:
@@ -388,10 +386,9 @@ class Battle:
   def monsterTurn(self) -> None:
     print("\n\n <<---\\\\ ATTACKED!\n\n")
     print("-",self.monster.power)
-    self.player.hitpoint -= self.monster.power  * random.randint(0, 3)
+    self.player.hitpoints -= self.monster.power  * random.randint(0, 3)
 
   def generateRewards(self) -> None:
-    #Test data here for now. TODO: make rewards random
     item_1 = Item()
     item_1.description = "A scroll. It is mostly in another language, elvish? The part that can be made out reads 'PASS'"
     item_1.use = "END"
@@ -580,7 +577,7 @@ def main():
   while(play_game == True):
       action_string = input("::> ")
       parseAction(player, action_string)
-      if player.hitpoint <= 0: exitProgram()
+      if player.hitpoints <= 0: exitProgram()
 
 if __name__ == "__main__":
   main()
